@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     // AGP 9.0 内置 Kotlin 支持，无需再声明 org.jetbrains.kotlin.android
     id("com.android.application")
@@ -17,12 +19,32 @@ android {
         versionName = "1.7.0"
     }
 
+    // 签名配置：从 keystore.properties 读取（该文件已被 .gitignore 排除，绝不入库）。
+    // 文件不存在时回退到 debug key，保证别人的机器上也能直接构建。
+    signingConfigs {
+        create("release") {
+            val propsFile = rootProject.file("keystore.properties")
+            if (propsFile.exists()) {
+                val props = Properties()
+                propsFile.inputStream().use { stream -> props.load(stream) }
+                storeFile = file(props.getProperty("storeFile"))
+                storePassword = props.getProperty("storePassword")
+                keyAlias = props.getProperty("keyAlias")
+                keyPassword = props.getProperty("keyPassword")
+            }
+        }
+    }
+
     // 模块本体是系统进程里的 hook，不做混淆
     buildTypes {
         release {
             isMinifyEnabled = false
-            // 用 debug key 签名，方便 LSPosed 直接加载；正式发布请换自己的 keystore
-            signingConfig = signingConfigs.getByName("debug")
+            // 有 keystore.properties 就用自签名，否则退回 debug key（方便他人直接构建）
+            signingConfig = if (rootProject.file("keystore.properties").exists()) {
+                signingConfigs.getByName("release")
+            } else {
+                signingConfigs.getByName("debug")
+            }
         }
     }
 

@@ -31,3 +31,6 @@ dist/
 
 # 发布临时文件
 .release-notes.md
+
+# 签名密码（绝对不要提交）
+keystore.properties
