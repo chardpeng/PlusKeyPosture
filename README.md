@@ -159,28 +159,7 @@ Xposed API 用本地 jar（`app/libs/xposed-api-82.jar`），因为该依赖不�
 
 > AGP 9.0 起内置 Kotlin 支持。若降级回 AGP 8.x，需在顶层 `build.gradle.kts` 加回 `org.jetbrains.kotlin.android` 插件声明，并确保 `settings.gradle.kts` 的插件仓库里保留 `google()`。
 
-### 签名配置
-
-release 构建默认读取项目根目录的 `keystore.properties`（**已被 `.gitignore` 排除，不会入库**）：
-
-```properties
-storeFile=C:/Users/你/.android-keys/pluskeyposture.jks
-storePassword=你的密码
-keyAlias=pluskeyposture
-keyPassword=你的密码
-```
-
-**没有该文件时会自动回退到 debug key**，所以别人 clone 下来可以直接构建调试，不会报错。
-
-生成自己的 keystore：
-
-```bash
-keytool -genkeypair -v -keystore ~/.android-keys/pluskeyposture.jks \
-  -alias pluskeyposture -keyalg RSA -keysize 4096 -validity 10950
-```
-
-> ⚠️ **务必保管好 keystore 和密码**。一旦丢失，就无法再给已发布的 App 签名更新，用户必须卸载重装。
-> 注意 `keystore.properties` 含明文密码，**不要提交、不要分享**。真的想入库，请改用环境变量或 CI 密钥。
+> **签名**：release 构建会自动读取项目根目录的 `keystore.properties`（该文件不入库）。**没有该文件时会回退到 debug key**，所以直接 clone 下来即可构建，无需额外配置。
 
 ---
 
