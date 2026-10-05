@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.HIGH_SAMPLING_RATE_SENSORS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
+
+    <application
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.PlusKeyPosture">
+
+        <!-- Xposed 模块元数据：作用域固定为「系统框架」 -->
+        <meta-data
+            android:name="xposedmodule"
+            android:value="true" />
+        <meta-data
+            android:name="xposeddescription"
+            android:value="一加15 Plus Key 手势（v1.7.0）：短按=一键闪记 / 双击=无操作 / 正面朝上（平放）长按=微信付款码 / 背面朝上（平放）长按=录音 / 横屏（手持）长按=无操作 / 竖屏（手持）长按=识码（系统扫一扫）。姿态判定按「平放/立着」两维正交建模，判据不足时不执行任何动作。" />
+        <meta-data
+            android:name="xposedminversion"
+            android:value="82" />
+        <meta-data
+            android:name="xposedscope"
+            android:value="android" />
+
+        <!--
+          配置读取通道。hook 侧跑在 system_server（uid 1000），直读模块 App 的
+          shared_prefs XML 会被 SELinux 的 MLS 类别挡住（EACCES），
+          因此改用 ContentProvider 把读取搬回 App 进程。
+
+          exported=true 是必要的：system_server 虽然是 core uid，
+          但在部分 ROM 上仍会被 provider 的导出检查拦下。
+          安全由 ConfigProvider.call() 内部的 uid 校验保证（只放行 root / system）。
+        -->
+        <provider
+            android:name=".core.ConfigProvider"
+            android:authorities="com.cong.pluskeyposture.config"
+            android:exported="true" />
+
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="true"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

@@ -1,0 +1,30 @@
+# Gradle
+.gradle/
+.kotlin/
+build/
+app/build/
+local.properties
+
+# IDE
+.idea/
+*.iml
+.DS_Store
+*.hprof
+
+# 签名文件（千万不要提交）
+*.jks
+*.keystore
+*.p12
+
+# 构建产物（源码仓库不收录 APK，需要的话走 Release）
+dist/
+*.apk
+*.ap_
+*.dex
+
+# 调试/抓包临时目录（体积巨大，且含设备 dump）
+.probe/
+*.dump
+
+# 日志
+*.log

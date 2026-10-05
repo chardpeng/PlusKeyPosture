@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 暗色模式主题：系统处于深色模式时自动生效（framework 内置 Material 深色主题，零依赖） -->
+    <style name="Theme.PlusKeyPosture" parent="android:Theme.Material">
+        <item name="android:colorPrimary">#3D5AFE</item>
+        <item name="android:colorPrimaryDark">#1A2980</item>
+        <item name="android:colorAccent">#3D5AFE</item>
+        <item name="android:statusBarColor">#1A2980</item>
+    </style>
+</resources>

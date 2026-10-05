@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- framework 内置 Material 主题，零依赖（不再依赖 AppCompat） -->
+    <style name="Theme.PlusKeyPosture" parent="android:Theme.Material.Light.DarkActionBar">
+        <item name="android:colorPrimary">#3D5AFE</item>
+        <item name="android:colorPrimaryDark">#1A2980</item>
+        <item name="android:colorAccent">#3D5AFE</item>
+        <item name="android:statusBarColor">#1A2980</item>
+    </style>
+</resources>
