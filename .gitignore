@@ -28,3 +28,6 @@ dist/
 
 # 日志
 *.log
+
+# 发布临时文件
+.release-notes.md
